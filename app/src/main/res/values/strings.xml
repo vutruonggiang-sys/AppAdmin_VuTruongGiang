@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AppAdmin_VuTruongGiang</string>
+    <string name="title">Quản Trị hệ thống OneFood</string>
+    <string name="manage_food">Quản Lý Sản Phẩm</string>
+    <string name="manage_res">Quản Lý Nhà Cung Cấp</string>
+    <string name="manage_order">Quản Lý Đơn Hàng</string>
+    <string name="manage_statistical">Xem Doanh Thu</string>
+</resources>

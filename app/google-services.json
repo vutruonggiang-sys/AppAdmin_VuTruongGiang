@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "355142276146",
+    "firebase_url": "https://my-vtg-orderfood-default-rtdb.firebaseio.com",
+    "project_id": "my-vtg-orderfood",
+    "storage_bucket": "my-vtg-orderfood.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355142276146:android:d75c459481ab8e6c45182b",
+        "android_client_info": {
+          "package_name": "com.example.appdoan_vutruonggiang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355142276146-8okbnuaum9dutvrl1nm0kchngfiiakhe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjBt8XQ5L17d3YXAwkeC_dkJjZgXdb2qk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355142276146-8okbnuaum9dutvrl1nm0kchngfiiakhe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355142276146:android:ef13c01ed139f72545182b",
+        "android_client_info": {
+          "package_name": "com.example.appvanchuyen_vutruonggiang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355142276146-8okbnuaum9dutvrl1nm0kchngfiiakhe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjBt8XQ5L17d3YXAwkeC_dkJjZgXdb2qk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355142276146-8okbnuaum9dutvrl1nm0kchngfiiakhe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355142276146:android:4c708b82c2608c0545182b",
+        "android_client_info": {
+          "package_name": "com.rikkei.training.appadmin_vutruonggiang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355142276146-86qd2b3t39qeg31o0ptr2ab4lq2v6jdm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rikkei.training.appadmin_vutruonggiang",
+            "certificate_hash": "bb81cfbcc46673713efab255d708a3a15de3fccf"
+          }
+        },
+        {
+          "client_id": "355142276146-8okbnuaum9dutvrl1nm0kchngfiiakhe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjBt8XQ5L17d3YXAwkeC_dkJjZgXdb2qk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355142276146-8okbnuaum9dutvrl1nm0kchngfiiakhe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
