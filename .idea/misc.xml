@@ -3,10 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/arrow_back.xml" value="0.25435897435897437" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/border_top.xml" value="0.25435897435897437" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/but_add.xml" value="0.25435897435897437" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/but_order_cart.xml" value="0.24814814814814815" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/start.xml" value="0.25435897435897437" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/vien.xml" value="0.25435897435897437" />
         <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/vien_chat.xml" value="0.23425925925925925" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/vien_item_food.xml" value="0.25435897435897437" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/vien_order_item.xml" value="0.25435897435897437" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/vien_vuong_number.xml" value="0.23425925925925925" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/drawable/www.xml" value="0.23425925925925925" />
         <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/activity_main.xml" value="0.19067028985507245" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/fragamnet_edit_restaurant.xml" value="0.264" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/fragment_edit_food.xml" value="0.22644927536231885" />
         <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/fragment_home.xml" value="0.19067028985507245" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/fragment_item_dagiao.xml" value="0.264" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/fragment_list_food.xml" value="0.22644927536231885" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/fragment_manage_cart_bill.xml" value="0.20652173913043478" />
         <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/fragment_manage_food.xml" value="0.19067028985507245" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/fragment_restaurant.xml" value="0.19067028985507245" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/item_food.xml" value="0.2210144927536232" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/item_giohang.xml" value="0.21693840579710144" />
+        <entry key="..\:/Download/AppAdmin_VuTruongGiang/app/src/main/res/layout/item_res.xml" value="0.19067028985507245" />
       </map>
     </option>
   </component>
