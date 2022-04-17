@@ -96,7 +96,7 @@ public class FragmentEditRestaurant extends Fragment {
                 String nameRes = edNameRes.getText().toString();
                 String addressRes = edAddressRes.getText().toString();
                 String id = edIdRes.getText().toString();
-                if (!edIdRes.isEnabled())
+                if (edIdRes.isEnabled())
                     if (idResList.contains(id)) {
                         Toast.makeText(mainActivity, "ID already exists", Toast.LENGTH_SHORT).show();
                         return;

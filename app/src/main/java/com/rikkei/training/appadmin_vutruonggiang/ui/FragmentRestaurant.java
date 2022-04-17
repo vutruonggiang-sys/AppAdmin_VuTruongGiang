@@ -34,6 +34,7 @@ public class FragmentRestaurant extends Fragment {
     private DatabaseReference databaseReference;
     List<NhaHang> nhaHangList;
     List<String> idResList=new ArrayList<>();
+    String IdRes="";
 
     public static Fragment newInstance() {
 
@@ -49,6 +50,8 @@ public class FragmentRestaurant extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_restaurant,container,false);
         init();
+        Bundle bundle=getArguments();
+        IdRes=IdRes+bundle.getString("IdRes","");
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference();
         nhaHangList=new ArrayList<>();
@@ -61,7 +64,7 @@ public class FragmentRestaurant extends Fragment {
                     nhaHangList.add(nhaHang);
                     idResList.add(nhaHang.getId());
                 }
-                AdapterRestaurant adapterRestaurant=new AdapterRestaurant(nhaHangList,mainActivity,idResList);
+                AdapterRestaurant adapterRestaurant=new AdapterRestaurant(nhaHangList,mainActivity,idResList,IdRes);
                 rcvDateRes.setAdapter(adapterRestaurant);
             }
 
@@ -74,17 +77,19 @@ public class FragmentRestaurant extends Fragment {
         butAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentEditRestaurant fragment=new FragmentEditRestaurant();
-                Bundle bundle=new Bundle();
-                bundle.putString("url", "");
-                bundle.putString("nameRes", "");
-                bundle.putString("addressRes", "");
-                bundle.putString("open", "");
-                bundle.putString("close", "");
-                bundle.putString("idRes","");
-                bundle.putStringArrayList("listIDRes", (ArrayList<String>) idResList);
-                fragment.setArguments(bundle);
-                mainActivity.getFragment(fragment);
+                if(IdRes.equals("admin")) {
+                    FragmentEditRestaurant fragment = new FragmentEditRestaurant();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url", "");
+                    bundle.putString("nameRes", "");
+                    bundle.putString("addressRes", "");
+                    bundle.putString("open", "");
+                    bundle.putString("close", "");
+                    bundle.putString("idRes", "");
+                    bundle.putStringArrayList("listIDRes", (ArrayList<String>) idResList);
+                    fragment.setArguments(bundle);
+                    mainActivity.getFragment(fragment);
+                }
             }
         });
         return view;

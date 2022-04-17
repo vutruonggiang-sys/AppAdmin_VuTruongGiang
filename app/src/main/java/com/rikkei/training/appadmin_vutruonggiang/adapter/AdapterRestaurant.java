@@ -27,11 +27,13 @@ public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.Vi
     List<NhaHang> nhaHangList;
     MainActivity mainActivity;
     List<String> idResList;
+    String idRes;
 
-    public AdapterRestaurant(List<NhaHang> nhaHangList, MainActivity context,List<String> idResList) {
+    public AdapterRestaurant(List<NhaHang> nhaHangList, MainActivity context,List<String> idResList,String idRes) {
         this.nhaHangList = nhaHangList;
         this.mainActivity = context;
         this.idResList=idResList;
+        this.idRes=idRes;
     }
 
     @NonNull
@@ -69,17 +71,19 @@ public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.Vi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentEditRestaurant fragment=new FragmentEditRestaurant();
-                Bundle bundle=new Bundle();
-                bundle.putString("url", nhaHang.getUrl());
-                bundle.putString("nameRes", nhaHang.getName());
-                bundle.putString("addressRes", nhaHang.getAddress());
-                bundle.putString("open", nhaHang.getOpen());
-                bundle.putString("close", nhaHang.getClose());
-                bundle.putString("idRes",nhaHang.getId());
-                bundle.putStringArrayList("listIDRes", (ArrayList<String>) idResList);
-                fragment.setArguments(bundle);
-                mainActivity.getFragment(fragment);
+                if(idRes.equals(nhaHang.getId())||idRes.equals("admin")) {
+                    FragmentEditRestaurant fragment = new FragmentEditRestaurant();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url", nhaHang.getUrl());
+                    bundle.putString("nameRes", nhaHang.getName());
+                    bundle.putString("addressRes", nhaHang.getAddress());
+                    bundle.putString("open", nhaHang.getOpen());
+                    bundle.putString("close", nhaHang.getClose());
+                    bundle.putString("idRes", nhaHang.getId());
+                    bundle.putStringArrayList("listIDRes", (ArrayList<String>) idResList);
+                    fragment.setArguments(bundle);
+                    mainActivity.getFragment(fragment);
+                }
             }
         });
     }

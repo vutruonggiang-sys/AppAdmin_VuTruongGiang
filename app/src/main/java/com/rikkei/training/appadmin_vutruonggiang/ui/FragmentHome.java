@@ -14,11 +14,11 @@ import com.rikkei.training.appadmin_vutruonggiang.R;
 
 public class FragmentHome extends Fragment {
     private View view;
-    private ConstraintLayout manageFood;
     private ConstraintLayout manageRes;
     private ConstraintLayout manageCart;
     private ConstraintLayout manageStatistical;
     MainActivity mainActivity;
+    String IdRes="";
 
     public static Fragment newInstance() {
 
@@ -34,19 +34,27 @@ public class FragmentHome extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         init();
+        Bundle bundle=getArguments();
+        if(bundle!=null){
+            IdRes=IdRes+bundle.getString("IdRes","");
+        }
         manageRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivity.getFragment(FragmentRestaurant.newInstance());
+                FragmentRestaurant fragmentRestaurant=new FragmentRestaurant();
+                Bundle bundle1=new Bundle();
+                bundle1.putString("IdRes",IdRes);
+                fragmentRestaurant.setArguments(bundle1);
+                mainActivity.getFragment(fragmentRestaurant);
             }
         });
+
         return view;
     }
 
     public void init() {
         mainActivity = (MainActivity) getActivity();
         manageCart = view.findViewById(R.id.manageCart);
-        manageFood = view.findViewById(R.id.manageFood);
         manageRes = view.findViewById(R.id.manageRestaurant);
         manageStatistical = view.findViewById(R.id.manageStatistical);
     }

@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getFragment(FragmentHome.newInstance());
+        getFragment(FragmentLogin.newInstance());
     }
 
     public void getFragment(Fragment fragment){
