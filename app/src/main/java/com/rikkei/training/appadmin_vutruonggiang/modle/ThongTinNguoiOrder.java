@@ -4,16 +4,18 @@ public class ThongTinNguoiOrder {
     String id,hoTen,sdt,diaChi;
     long giaKhuyenMai;
     String idRes;
+    String email;
 
     public ThongTinNguoiOrder(){}
 
-    public ThongTinNguoiOrder(String id, long giaKhuyenMai,String hoTen,String sdt,String diaChi, String idRes) {
+    public ThongTinNguoiOrder(String id, long giaKhuyenMai,String hoTen,String sdt,String diaChi, String idRes, String email) {
         this.id = id;
         this.giaKhuyenMai=giaKhuyenMai;
         this.hoTen=hoTen;
         this.sdt=sdt;
         this.diaChi=diaChi;
         this.idRes=idRes;
+        this.email=email;
     }
 
     public String getId() {
@@ -62,5 +64,13 @@ public class ThongTinNguoiOrder {
 
     public void setIdRes(String idRes) {
         this.idRes = idRes;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

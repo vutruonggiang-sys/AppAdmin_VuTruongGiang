@@ -85,6 +85,10 @@ public class FragmentEditRestaurant extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragamnet_edit_restaurant, container, false);
         init();
+        Bundle bundle=getArguments();
+        if(bundle!=null){
+            idRes=idRes+bundle.getString("IdRes","");
+        }
         databaseReference = firebaseDatabase.getReference().child("nhaHang");
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -121,13 +125,37 @@ public class FragmentEditRestaurant extends Fragment {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivity.getFragment(FragmentListFood.newInstance());
+                if(idRes.equals("admin")) {
+                    FragmentRestaurant fragmentHome = new FragmentRestaurant();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", "admin");
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }else{
+                    FragmentRestaurant fragmentHome = new FragmentRestaurant();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", idRes);
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }
             }
         });
         tvListFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivity.getFragment(FragmentListFood.newInstance());
+                if(idRes.equals("admin")) {
+                    FragmentListFood fragmentHome = new FragmentListFood();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", "admin");
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }else{
+                    FragmentListFood fragmentHome = new FragmentListFood();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", idRes);
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }
             }
         });
         imgCamera.setOnClickListener(new View.OnClickListener() {

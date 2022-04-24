@@ -1,10 +1,13 @@
 package com.rikkei.training.appadmin_vutruonggiang.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,19 +33,15 @@ import java.util.List;
 
 public class AdapterRecyleViewSumDaGiao extends RecyclerView.Adapter<AdapterRecyleViewSumDaGiao.ViewHoder> {
     List<ThongTinNguoiOrder> thongTinNguoiOrderList;
-    String email;
     List<Food_Order> food_orderList;
     Context context;
     AdapterRecyleViewGioHang adapterRecyleViewGioHang;
     int d=0;
-    //String ma_delete="";
     FirebaseDatabase firebaseDatabase;
-    //IThanhToan iThanhToan;
     String tongFood="";
     long tong=0;
-    public AdapterRecyleViewSumDaGiao(List<ThongTinNguoiOrder> thongTinNguoiOrderList, String email, Context context) {
+    public AdapterRecyleViewSumDaGiao(List<ThongTinNguoiOrder> thongTinNguoiOrderList, Context context) {
         this.thongTinNguoiOrderList = thongTinNguoiOrderList;
-        this.email=email;
         this.context=context;
     }
 
@@ -63,11 +63,16 @@ public class AdapterRecyleViewSumDaGiao extends RecyclerView.Adapter<AdapterRecy
             holder.tv_sum_dagiao.setText(0+"");
             return;
         }
+        holder.edNameBill.setEnabled(false);
+        holder.edNameBill.setText(thongTinNguoiOrder.getHoTen());
+        holder.tvTime.setText(thongTinNguoiOrder.getId());
+        holder.tvAddress.setText(thongTinNguoiOrder.getDiaChi());
+        holder.tvSDT.setText(thongTinNguoiOrder.getSdt());
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
         holder.dataDagiao.setLayoutManager(layoutManager);
         firebaseDatabase=FirebaseDatabase.getInstance();
         DatabaseReference databaseReference=firebaseDatabase.getReference();
-        databaseReference.child("da_giao").child(email).child(thongTinNguoiOrder.getId()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("da_giao").child(thongTinNguoiOrder.getEmail()).child(thongTinNguoiOrder.getId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 food_orderList=new ArrayList<>();
@@ -90,25 +95,31 @@ public class AdapterRecyleViewSumDaGiao extends RecyclerView.Adapter<AdapterRecy
 
             }
         });
-
-        holder.but_ThanhToan.setOnClickListener(new View.OnClickListener() {
+        holder.tv_hienThiMaGiamGia.setText(thongTinNguoiOrder.getGiaKhuyenMai()+" VND");
+        holder.but_ThanhToan.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                if(d!=1){
-                    Toast.makeText(context,"Quý Khách Vui Lòng Chọn Đơn Hàng Thanh Toán",Toast.LENGTH_SHORT).show();
-                    return;
-                }else{
-                    //iThanhToan.getKey_delete(key.getId());
-                    Calendar calendar=Calendar.getInstance();
-                    DateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    String time=dateFormat.format(calendar.getTime());
-                    
-                    databaseReference.child("thong_tin_nguoi_nhan_hang").child(email).child(thongTinNguoiOrder.getId()).removeValue();
-                    databaseReference.child("da_giao").child(email).child(thongTinNguoiOrder.getId()).removeValue();
-                }
+            public boolean onLongClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                alertDialog.setTitle("Bạn có muốn hủy bỏ đơn hàng này không?");
+                alertDialog.setIcon(R.drawable.question);
+                alertDialog.setButton2("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        databaseReference.child("thong_tin_nguoi_nhan_hang").child(thongTinNguoiOrder.getEmail()).child(thongTinNguoiOrder.getId()).removeValue();
+                        databaseReference.child("da_giao").child(thongTinNguoiOrder.getEmail()).child(thongTinNguoiOrder.getId()).removeValue();
+                        databaseReference.child("TotalBill").child(thongTinNguoiOrder.getEmail()+thongTinNguoiOrder.getId()).removeValue();
+                    }
+                });
+                alertDialog.setButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+                return false;
             }
         });
-        holder.tv_hienThiMaGiamGia.setText(thongTinNguoiOrder.getGiaKhuyenMai()+" VND");
 
     }
     public void release(){
@@ -129,6 +140,11 @@ public class AdapterRecyleViewSumDaGiao extends RecyclerView.Adapter<AdapterRecy
         TextView tv_hienThiMaGiamGia;
         Button but_ThanhToan;
         TextView tvTotalPayable;
+        TextInputEditText edNameBill;
+        TextView tvTime;
+        TextView tvAddress;
+        TextView tvSDT;
+
         public ViewHoder(@NonNull View itemView) {
             super(itemView);
             tv_sum_dagiao=itemView.findViewById(R.id.tv_sum_money);
@@ -136,6 +152,10 @@ public class AdapterRecyleViewSumDaGiao extends RecyclerView.Adapter<AdapterRecy
             tv_hienThiMaGiamGia=itemView.findViewById(R.id.tvMaGiamGia);
             but_ThanhToan=itemView.findViewById(R.id.but_order_cart);
             tvTotalPayable=itemView.findViewById(R.id.tvTotalPayable);
+            tvAddress=itemView.findViewById(R.id.tvAddress);
+            edNameBill=itemView.findViewById(R.id.edNameBill);
+            tvTime=itemView.findViewById(R.id.tvTime);
+            tvSDT=itemView.findViewById(R.id.tvSDT);
         }
     }
 }

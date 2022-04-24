@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,8 +34,9 @@ public class FragmentRestaurant extends Fragment {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     List<NhaHang> nhaHangList;
-    List<String> idResList=new ArrayList<>();
-    String IdRes="";
+    List<String> idResList = new ArrayList<>();
+    String idRes = "";
+    ImageView imgButBack;
 
     public static Fragment newInstance() {
 
@@ -48,36 +50,36 @@ public class FragmentRestaurant extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_restaurant,container,false);
+        view = inflater.inflate(R.layout.fragment_restaurant, container, false);
         init();
-        Bundle bundle=getArguments();
-        IdRes=IdRes+bundle.getString("IdRes","");
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
-        nhaHangList=new ArrayList<>();
+        Bundle bundle = getArguments();
+        idRes = idRes + bundle.getString("IdRes", "");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+        nhaHangList = new ArrayList<>();
         databaseReference.child("nhaHang").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> dataSnapshotIterable=snapshot.getChildren();
-                for(DataSnapshot data:dataSnapshotIterable){
-                    NhaHang nhaHang=data.getValue(NhaHang.class);
+                Iterable<DataSnapshot> dataSnapshotIterable = snapshot.getChildren();
+                for (DataSnapshot data : dataSnapshotIterable) {
+                    NhaHang nhaHang = data.getValue(NhaHang.class);
                     nhaHangList.add(nhaHang);
                     idResList.add(nhaHang.getId());
                 }
-                AdapterRestaurant adapterRestaurant=new AdapterRestaurant(nhaHangList,mainActivity,idResList,IdRes);
+                AdapterRestaurant adapterRestaurant = new AdapterRestaurant(nhaHangList, mainActivity, idResList, idRes);
                 rcvDateRes.setAdapter(adapterRestaurant);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(mainActivity,"Error",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, "Error", Toast.LENGTH_SHORT).show();
             }
         });
 
         butAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(IdRes.equals("admin")) {
+                if (idRes.equals("admin")) {
                     FragmentEditRestaurant fragment = new FragmentEditRestaurant();
                     Bundle bundle = new Bundle();
                     bundle.putString("url", "");
@@ -92,12 +94,31 @@ public class FragmentRestaurant extends Fragment {
                 }
             }
         });
+        imgButBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(idRes.equals("admin")) {
+                    FragmentHome fragmentHome = new FragmentHome();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", "admin");
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }else{
+                    FragmentHome fragmentHome = new FragmentHome();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", idRes);
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }
+            }
+        });
         return view;
     }
 
-    public void init(){
-        mainActivity= (MainActivity) getActivity();
-        butAdd=view.findViewById(R.id.butAddRes);
-        rcvDateRes=view.findViewById(R.id.dataRestaurant);
+    public void init() {
+        mainActivity = (MainActivity) getActivity();
+        butAdd = view.findViewById(R.id.butAddRes);
+        rcvDateRes = view.findViewById(R.id.dataRestaurant);
+        imgButBack = view.findViewById(R.id.imgButBack);
     }
 }

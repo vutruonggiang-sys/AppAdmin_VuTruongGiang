@@ -18,7 +18,7 @@ public class FragmentHome extends Fragment {
     private ConstraintLayout manageCart;
     private ConstraintLayout manageStatistical;
     MainActivity mainActivity;
-    String IdRes="";
+    String idRes="";
 
     public static Fragment newInstance() {
 
@@ -36,19 +36,28 @@ public class FragmentHome extends Fragment {
         init();
         Bundle bundle=getArguments();
         if(bundle!=null){
-            IdRes=IdRes+bundle.getString("IdRes","");
+            idRes=idRes+bundle.getString("IdRes","");
         }
         manageRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentRestaurant fragmentRestaurant=new FragmentRestaurant();
                 Bundle bundle1=new Bundle();
-                bundle1.putString("IdRes",IdRes);
+                bundle1.putString("IdRes",idRes);
                 fragmentRestaurant.setArguments(bundle1);
                 mainActivity.getFragment(fragmentRestaurant);
             }
         });
-
+        manageCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentBill fragment=new FragmentBill();
+                Bundle bundle1=new Bundle();
+                bundle1.putString("IdRes",idRes);
+                fragment.setArguments(bundle1);
+                mainActivity.getFragment(fragment);
+            }
+        });
         return view;
     }
 

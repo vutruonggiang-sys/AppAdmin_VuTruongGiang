@@ -12,6 +12,14 @@
         android:layout_marginTop="10dp"
         android:src="@drawable/arrow_back" />
 
+    <ImageView
+        android:id="@+id/imgLateTime"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/latetime" />
+
     <TextView
         android:id="@+id/tvTitleListBills"
         android:text="@string/listBill"

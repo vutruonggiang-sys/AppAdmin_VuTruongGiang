@@ -95,7 +95,19 @@ public class FragmentEditFood extends Fragment {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivity.getFragment(FragmentListFood.newInstance());
+                if(idRes.equals("admin")) {
+                    FragmentListFood fragmentHome = new FragmentListFood();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", "admin");
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }else{
+                    FragmentListFood fragmentHome = new FragmentListFood();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", idRes);
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }
             }
         });
 

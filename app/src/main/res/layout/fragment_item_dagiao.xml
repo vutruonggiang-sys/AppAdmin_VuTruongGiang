@@ -14,15 +14,16 @@
         android:background="@drawable/vien_item_food"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvNameBill"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edNameBill"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Vu Truong Giang"
             android:textColor="@color/black"
             android:textSize="30dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:drawableEnd="@drawable/question"/>
 
         <TextView
             android:id="@+id/tvTime"
@@ -35,7 +36,7 @@
             android:layout_height="30dp"/>
 
         <TextView
-            android:id="@+id/tvAdress"
+            android:id="@+id/tvAddress"
             android:textAlignment="center"
             android:textStyle="normal"
             android:textSize="20dp"

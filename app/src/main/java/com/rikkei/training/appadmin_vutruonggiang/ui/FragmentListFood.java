@@ -43,6 +43,7 @@ public class FragmentListFood extends Fragment {
     List<Food> foodList;
     ProcessFood processFood=new ProcessFood();
     List<String> idFoodList=new ArrayList<>();
+    String idRes="";
 
     public static Fragment newInstance() {
 
@@ -58,6 +59,10 @@ public class FragmentListFood extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_list_food,container,false);
         init();
+        Bundle bundle=getArguments();
+        if(bundle!=null){
+            idRes=idRes+bundle.getString("IdRes","");
+        }
         foodList=new ArrayList<>();
         databaseReference=firebaseDatabase.getReference();
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(mainActivity,RecyclerView.VERTICAL,false);
@@ -117,6 +122,24 @@ public class FragmentListFood extends Fragment {
                 bundle.putStringArrayList("listIDFood", (ArrayList<String>) idFoodList);
                 fragment.setArguments(bundle);
                 mainActivity.getFragment(fragment);
+            }
+        });
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(idRes.equals("admin")) {
+                    FragmentEditRestaurant fragmentHome = new FragmentEditRestaurant();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", "admin");
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }else{
+                    FragmentEditRestaurant fragmentHome = new FragmentEditRestaurant();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", idRes);
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
+                }
             }
         });
         return view;
