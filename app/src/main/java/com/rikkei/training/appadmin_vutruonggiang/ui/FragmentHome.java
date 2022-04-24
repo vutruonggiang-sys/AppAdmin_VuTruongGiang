@@ -58,6 +58,16 @@ public class FragmentHome extends Fragment {
                 mainActivity.getFragment(fragment);
             }
         });
+        manageStatistical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentRevenue fragment=new FragmentRevenue();
+                Bundle bundle1=new Bundle();
+                bundle1.putString("IdRes",idRes);
+                fragment.setArguments(bundle1);
+                mainActivity.getFragment(fragment);
+            }
+        });
         return view;
     }
 

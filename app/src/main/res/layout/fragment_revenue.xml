@@ -11,11 +11,11 @@
 
     <EditText
         android:id="@+id/edInputIdRes"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:background="@drawable/vien_item_food"
-        android:layout_width="80dp"
-        android:layout_height="40dp"/>
+        android:background="@drawable/vien_item_food" />
 
     <LinearLayout
         android:layout_width="match_parent"
