@@ -13,6 +13,7 @@
         android:id="@+id/edInputIdRes"
         android:layout_width="80dp"
         android:layout_height="40dp"
+        android:paddingLeft="5dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:background="@drawable/vien_item_food" />

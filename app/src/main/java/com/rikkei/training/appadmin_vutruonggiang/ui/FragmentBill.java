@@ -45,7 +45,7 @@ public class FragmentBill extends Fragment {
     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
     List<ThongTinNguoiOrder> thongTinNguoiOrderList1 = new ArrayList<>();
     List<ThongTinNguoiOrder> thongTinNguoiOrderListLateTime = new ArrayList<>();
-    private boolean isTime=false;
+    private boolean isTime = false;
 
 
     public static Fragment newInstance() {
@@ -67,7 +67,7 @@ public class FragmentBill extends Fragment {
         databaseReference = firebaseDatabase.getReference();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mainActivity, RecyclerView.VERTICAL, false);
         dataBill.setLayoutManager(layoutManager);
-        databaseReference.child("thong_tin_nguoi_nhan_hang").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("TotalBill").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Iterable<DataSnapshot> dataSnapshotIterable = snapshot.getChildren();
@@ -99,7 +99,7 @@ public class FragmentBill extends Fragment {
         imgLateTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isTime==false) {
+                if (isTime == false) {
                     long timeNow = System.currentTimeMillis();
                     if (idRes.equals("admin")) {
                         for (int i = 0; i < thongTinNguoiOrderList.size(); i++) {
@@ -138,35 +138,28 @@ public class FragmentBill extends Fragment {
                             }
                         }
                     }
-                    isTime=true;
+                    isTime = true;
                 }
             }
         });
         imgBackHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isTime){
-                    if(idRes.equals("admin")){
-                        adapter=new AdapterRecyleViewSumDaGiao(thongTinNguoiOrderList,mainActivity);
+                if (isTime) {
+                    if (idRes.equals("admin")) {
+                        adapter = new AdapterRecyleViewSumDaGiao(thongTinNguoiOrderList, mainActivity);
                         dataBill.setAdapter(adapter);
-                    }else{
-                        adapter=new AdapterRecyleViewSumDaGiao(thongTinNguoiOrderList1,mainActivity);
+                    } else {
+                        adapter = new AdapterRecyleViewSumDaGiao(thongTinNguoiOrderList1, mainActivity);
                         dataBill.setAdapter(adapter);
                     }
-                }else{
-                    if(idRes.equals("admin")) {
-                        FragmentHome fragmentHome = new FragmentHome();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("IdRes", "admin");
-                        fragmentHome.setArguments(bundle);
-                        mainActivity.getFragment(fragmentHome);
-                    }else{
-                        FragmentHome fragmentHome = new FragmentHome();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("IdRes", idRes);
-                        fragmentHome.setArguments(bundle);
-                        mainActivity.getFragment(fragmentHome);
-                    }
+                    isTime=false;
+                } else {
+                    FragmentHome fragmentHome = new FragmentHome();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IdRes", idRes);
+                    fragmentHome.setArguments(bundle);
+                    mainActivity.getFragment(fragmentHome);
                 }
             }
         });

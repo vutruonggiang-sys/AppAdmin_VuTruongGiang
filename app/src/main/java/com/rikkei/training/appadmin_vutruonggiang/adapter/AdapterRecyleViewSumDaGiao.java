@@ -138,7 +138,7 @@ public class AdapterRecyleViewSumDaGiao extends RecyclerView.Adapter<AdapterRecy
         TextView tv_sum_dagiao;
         RecyclerView dataDagiao;
         TextView tv_hienThiMaGiamGia;
-        Button but_ThanhToan;
+        TextView but_ThanhToan;
         TextView tvTotalPayable;
         TextInputEditText edNameBill;
         TextView tvTime;

@@ -68,7 +68,7 @@ public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.Vi
 
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.imgRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(idRes.equals(nhaHang.getId())||idRes.equals("admin")) {
@@ -80,6 +80,7 @@ public class AdapterRestaurant extends RecyclerView.Adapter<AdapterRestaurant.Vi
                     bundle.putString("open", nhaHang.getOpen());
                     bundle.putString("close", nhaHang.getClose());
                     bundle.putString("idRes", nhaHang.getId());
+                    bundle.putString("IdRes", idRes);
                     bundle.putStringArrayList("listIDRes", (ArrayList<String>) idResList);
                     fragment.setArguments(bundle);
                     mainActivity.getFragment(fragment);

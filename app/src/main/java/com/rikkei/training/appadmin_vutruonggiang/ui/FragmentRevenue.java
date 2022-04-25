@@ -1,6 +1,8 @@
 package com.rikkei.training.appadmin_vutruonggiang.ui;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,31 +61,79 @@ public class FragmentRevenue extends Fragment {
         Bundle bundle=getArguments();
         idRes=idRes+bundle.getString("IdRes","");
         init();
-        if(idRes.equals("admin")){
-            getDataAdmin();
+        if(idRes.equals("admin")) {
+            edIdRes.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mainActivity, RecyclerView.VERTICAL, false);
+                    rcvDataRevenue.setLayoutManager(layoutManager);
+                    databaseReference.child("TotalRevenueTime").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Iterable<DataSnapshot> dataSnapshotIterable = snapshot.getChildren();
+                            for (DataSnapshot data : dataSnapshotIterable) {
+                                RevenueByTime revenueByTime = data.getValue(RevenueByTime.class);
+                                revenueByTimeList.add(revenueByTime);
+                                if (revenueByTime.getId().equals(edIdRes.getText().toString().trim())) {
+                                    tvLunch.setText(revenueByTime.getLunch() + "");
+                                    tvTonight.setText(revenueByTime.getTonight() + "");
+                                    tvNothing.setText(revenueByTime.getNothing() + "");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                    getDataAdmin();
+                }
+            });
         }else{
             getData();
-        }
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(mainActivity,RecyclerView.VERTICAL,false);
-        rcvDataRevenue.setLayoutManager(layoutManager);
-        databaseReference.child("TotalRevenueTime").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> dataSnapshotIterable=snapshot.getChildren();
-                for(DataSnapshot data:dataSnapshotIterable){
-                    RevenueByTime revenueByTime=data.getValue(RevenueByTime.class);
-                    revenueByTimeList.add(revenueByTime);
-                    if(revenueByTime.getId().equals(idRes)){
-                        tvLunch.setText(revenueByTime.getLunch()+"");
-                        tvTonight.setText(revenueByTime.getTonight()+"");
-                        tvNothing.setText(revenueByTime.getNothing()+"");
+            edIdRes.setVisibility(View.GONE);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mainActivity, RecyclerView.VERTICAL, false);
+            rcvDataRevenue.setLayoutManager(layoutManager);
+            databaseReference.child("TotalRevenueTime").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Iterable<DataSnapshot> dataSnapshotIterable = snapshot.getChildren();
+                    for (DataSnapshot data : dataSnapshotIterable) {
+                        RevenueByTime revenueByTime = data.getValue(RevenueByTime.class);
+                        revenueByTimeList.add(revenueByTime);
+                        if (revenueByTime.getId().equals(idRes)) {
+                            tvLunch.setText(revenueByTime.getLunch() + "");
+                            tvTonight.setText(revenueByTime.getTonight() + "");
+                            tvNothing.setText(revenueByTime.getNothing() + "");
+                        }
                     }
                 }
-            }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+        imgButBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onClick(View v) {
+                FragmentHome fragmentHome = new FragmentHome();
+                Bundle bundle = new Bundle();
+                bundle.putString("IdRes", idRes);
+                fragmentHome.setArguments(bundle);
+                mainActivity.getFragment(fragmentHome);
             }
         });
         return view;
@@ -110,10 +160,9 @@ public class FragmentRevenue extends Fragment {
     }
 
     private void getDataAdmin() {
-        String idNh=edIdRes.getText().toString().trim();
-        if(!idNh.equals("")){
+        if(!edIdRes.getText().toString().trim().equals("")){
             try {
-                databaseReference.child("doanhthu").child(idNh).addValueEventListener(new ValueEventListener() {
+                databaseReference.child("doanhthu").child(edIdRes.getText().toString().trim()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Iterable<DataSnapshot> dataSnapshotIterable=snapshot.getChildren();

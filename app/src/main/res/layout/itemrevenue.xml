@@ -7,12 +7,17 @@
     <TextView
         android:id="@+id/tvNameFood"
         android:layout_width="0dp"
+        android:text="abc"
+        android:gravity="center"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <TextView
         android:id="@+id/tvRevenueFood"
         android:layout_width="0dp"
+        android:gravity="center"
+        android:text="000"
         android:layout_height="match_parent"
         android:layout_weight="1" />
+
 </LinearLayout>

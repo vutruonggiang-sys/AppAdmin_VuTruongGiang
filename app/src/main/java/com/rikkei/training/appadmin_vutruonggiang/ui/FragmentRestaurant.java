@@ -97,19 +97,11 @@ public class FragmentRestaurant extends Fragment {
         imgButBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(idRes.equals("admin")) {
-                    FragmentHome fragmentHome = new FragmentHome();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IdRes", "admin");
-                    fragmentHome.setArguments(bundle);
-                    mainActivity.getFragment(fragmentHome);
-                }else{
-                    FragmentHome fragmentHome = new FragmentHome();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IdRes", idRes);
-                    fragmentHome.setArguments(bundle);
-                    mainActivity.getFragment(fragmentHome);
-                }
+                FragmentHome fragmentHome = new FragmentHome();
+                Bundle bundle = new Bundle();
+                bundle.putString("IdRes", idRes);
+                fragmentHome.setArguments(bundle);
+                mainActivity.getFragment(fragmentHome);
             }
         });
         return view;
