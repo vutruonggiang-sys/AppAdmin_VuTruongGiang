@@ -65,11 +65,12 @@ public class FragmentEditRestaurant extends Fragment {
     StorageReference storageReference;
     StorageReference riversRef;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    String idRes = "";
+    String idNh = "";
     String url = "";
     String name = "", address = "", open = "", close = "";
     String urlNew = "";
     List<String> idResList = new ArrayList<>();
+    String idRes="";
 
     public static Fragment newInstance() {
 
@@ -110,11 +111,11 @@ public class FragmentEditRestaurant extends Fragment {
                     String closeRes = hourClose.getValue() + ":" + minuteClose.getValue();
                     updateAvt(imageUri);
                     if (urlNew.equals("")) {
-                        NhaHang nhaHang = new NhaHang(idRes, addressRes, nameRes, url, openRes, closeRes, 5, 0, 0);
-                        databaseReference.child(idRes).setValue(nhaHang);
+                        NhaHang nhaHang = new NhaHang(idNh, addressRes, nameRes, url, openRes, closeRes, 5, 0, 0);
+                        databaseReference.child(idNh).setValue(nhaHang);
                     } else {
-                        NhaHang nhaHang = new NhaHang(idRes, addressRes, nameRes, urlNew, openRes, closeRes, 5, 0, 0);
-                        databaseReference.child(idRes).setValue(nhaHang);
+                        NhaHang nhaHang = new NhaHang(idNh, addressRes, nameRes, urlNew, openRes, closeRes, 5, 0, 0);
+                        databaseReference.child(idNh).setValue(nhaHang);
                     }
                     Toast.makeText(mainActivity, "Updated!!!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -135,19 +136,11 @@ public class FragmentEditRestaurant extends Fragment {
         tvListFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (idRes.equals("admin")) {
-                    FragmentListFood fragmentHome = new FragmentListFood();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IdRes", "admin");
-                    fragmentHome.setArguments(bundle);
-                    mainActivity.getFragment(fragmentHome);
-                } else {
-                    FragmentListFood fragmentHome = new FragmentListFood();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IdRes", idRes);
-                    fragmentHome.setArguments(bundle);
-                    mainActivity.getFragment(fragmentHome);
-                }
+                FragmentListFood fragmentHome = new FragmentListFood();
+                Bundle bundle = new Bundle();
+                bundle.putString("IdRes",idRes);
+                fragmentHome.setArguments(bundle);
+                mainActivity.getFragment(fragmentHome);
             }
         });
         imgCamera.setOnClickListener(new View.OnClickListener() {
@@ -274,7 +267,7 @@ public class FragmentEditRestaurant extends Fragment {
         File fileCamera = contextWrapper.getDir("pathCamera", Context.MODE_PRIVATE);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy/hh/mm/ss");
         Calendar calendar = Calendar.getInstance();
-        File path = new File(fileCamera, idRes + simpleDateFormat.format(calendar.getTime()));
+        File path = new File(fileCamera, idNh + simpleDateFormat.format(calendar.getTime()));
         try {
             FileOutputStream fileOS = new FileOutputStream(path);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOS);
@@ -319,11 +312,11 @@ public class FragmentEditRestaurant extends Fragment {
             address = address + bundle.getString("addressRes", "");
             open = open + bundle.getString("open", "");
             close = close + bundle.getString("close", "");
-            idRes = idRes + bundle.getString("idRes", "");
+            idNh = idNh + bundle.getString("idRes", "");
             idResList = bundle.getStringArrayList("listIDRes");
 
-            if (!idRes.equals("")) {
-                edIdRes.setText(idRes);
+            if (!idNh.equals("")) {
+                edIdRes.setText(idNh);
                 edIdRes.setEnabled(false);
             }
             if (!url.equals("")) {

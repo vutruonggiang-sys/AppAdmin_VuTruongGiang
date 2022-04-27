@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.rikkei.training.appadmin_vutruonggiang.R;
 import com.rikkei.training.appadmin_vutruonggiang.modle.Food_Order;;import java.util.List;
 
@@ -41,6 +42,7 @@ public class AdapterRecyleViewGioHang extends RecyclerView.Adapter<AdapterRecyle
         holder.tvName.setText(food_order.getName());
         holder.tvPrice.setText(food_order.getPrice() + "");
         holder.tvAmount.setText(food_order.getAmount() + "");
+        Glide.with(context).load(food_order.getUrl()).into(holder.image);
     }
 
     public void release() {

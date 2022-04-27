@@ -23,11 +23,13 @@ public class AdapterFood extends RecyclerView.Adapter<AdapterFood.ViewHolder> {
     List<Food> foodList;
     MainActivity mainActivity;
     List<String> idFoodList;
+    String idRes;
 
-    public AdapterFood(List<Food> foodList, MainActivity context,List<String> idFoodList) {
+    public AdapterFood(List<Food> foodList, MainActivity context,List<String> idFoodList, String idRes) {
         this.foodList = foodList;
         this.mainActivity = context;
         this.idFoodList=idFoodList;
+        this.idRes=idRes;
     }
 
     @NonNull
@@ -57,6 +59,7 @@ public class AdapterFood extends RecyclerView.Adapter<AdapterFood.ViewHolder> {
                 bundle.putString("type", food.getType());
                 bundle.putString("idRes",food.getIdNhaHang());
                 bundle.putFloat("price",food.getPrice());
+                bundle.putString("IdRes",idRes);
                 bundle.putStringArrayList("listIDFood", (ArrayList<String>) idFoodList);
                 fragment.setArguments(bundle);
                 mainActivity.getFragment(fragment);

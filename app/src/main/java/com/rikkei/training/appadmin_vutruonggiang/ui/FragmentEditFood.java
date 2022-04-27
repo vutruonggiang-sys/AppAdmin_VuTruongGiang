@@ -50,7 +50,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FragmentEditFood extends Fragment {
 
     private View view;
-    String id = "", idRes = "", name = "", detail = "", type = "", url = "";
+    String id = "", idNh = "", name = "", detail = "", type = "", url = "";
     Float price = 0f;
     private ImageView imgBack;
     private TextView tvSave;
@@ -71,6 +71,7 @@ public class FragmentEditFood extends Fragment {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     String urlNew = "";
     List<String> idFoodList = new ArrayList<>();
+    String idRes="";
 
     public static Fragment newInstance() {
 
@@ -95,19 +96,11 @@ public class FragmentEditFood extends Fragment {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(idRes.equals("admin")) {
-                    FragmentListFood fragmentHome = new FragmentListFood();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IdRes", "admin");
-                    fragmentHome.setArguments(bundle);
-                    mainActivity.getFragment(fragmentHome);
-                }else{
-                    FragmentListFood fragmentHome = new FragmentListFood();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IdRes", idRes);
-                    fragmentHome.setArguments(bundle);
-                    mainActivity.getFragment(fragmentHome);
-                }
+                FragmentListFood fragmentHome = new FragmentListFood();
+                Bundle bundle = new Bundle();
+                bundle.putString("IdRes", idRes);
+                fragmentHome.setArguments(bundle);
+                mainActivity.getFragment(fragmentHome);
             }
         });
 
@@ -259,7 +252,7 @@ public class FragmentEditFood extends Fragment {
         File fileCamera = contextWrapper.getDir("pathCamera", Context.MODE_PRIVATE);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy/hh/mm/ss");
         Calendar calendar = Calendar.getInstance();
-        File path = new File(fileCamera, idRes + id + simpleDateFormat.format(calendar.getTime()));
+        File path = new File(fileCamera, idNh + id + simpleDateFormat.format(calendar.getTime()));
         try {
             FileOutputStream fileOS = new FileOutputStream(path);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOS);
@@ -287,12 +280,13 @@ public class FragmentEditFood extends Fragment {
         if (bundle != null) {
             url = bundle.getString("url", "");
             name = name + bundle.getString("nameFood", "");
-            idRes = idRes + bundle.getString("idRes", "");
+            idNh = idNh + bundle.getString("idRes", "");
             id = id + bundle.getString("id", "");
             type = type + bundle.getString("type", "");
             detail = type + bundle.getString("detailFood", "");
             price = price + bundle.getFloat("price", 0);
             idFoodList = bundle.getStringArrayList("listIDFood");
+            idRes=idRes+bundle.getString("IdRes","");
             if (!id.equals("")) {
                 edId.setText(id);
                 edId.setEnabled(false);

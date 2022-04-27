@@ -38,12 +38,12 @@ public class FragmentListFood extends Fragment {
     private AppCompatButton butAdd;
     private RecyclerView rcvDataFood;
     MainActivity mainActivity;
-    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
     List<Food> foodList;
-    ProcessFood processFood=new ProcessFood();
-    List<String> idFoodList=new ArrayList<>();
-    String idRes="";
+    ProcessFood processFood = new ProcessFood();
+    List<String> idFoodList = new ArrayList<>();
+    String idRes = "";
 
     public static Fragment newInstance() {
 
@@ -57,22 +57,22 @@ public class FragmentListFood extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_list_food,container,false);
+        view = inflater.inflate(R.layout.fragment_list_food, container, false);
         init();
-        Bundle bundle=getArguments();
-        if(bundle!=null){
-            idRes=idRes+bundle.getString("IdRes","");
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            idRes = idRes + bundle.getString("IdRes", "");
         }
-        foodList=new ArrayList<>();
-        databaseReference=firebaseDatabase.getReference();
-        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(mainActivity,RecyclerView.VERTICAL,false);
+        foodList = new ArrayList<>();
+        databaseReference = firebaseDatabase.getReference();
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mainActivity, RecyclerView.VERTICAL, false);
         rcvDataFood.setLayoutManager(layoutManager);
         databaseReference.child("food").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> dataSnapshotIterable=snapshot.getChildren();
-                for(DataSnapshot data:dataSnapshotIterable){
-                    Food food=data.getValue(Food.class);
+                Iterable<DataSnapshot> dataSnapshotIterable = snapshot.getChildren();
+                for (DataSnapshot data : dataSnapshotIterable) {
+                    Food food = data.getValue(Food.class);
                     foodList.add(food);
                     idFoodList.add(food.getId());
                 }
@@ -80,45 +80,46 @@ public class FragmentListFood extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(mainActivity,"Fail Data",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, "Fail Data", Toast.LENGTH_SHORT).show();
             }
         });
         tvFastFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Food> fastFoodList=processFood.doAnNhanh(foodList);
-                AdapterFood adapterFood=new AdapterFood(fastFoodList,mainActivity,idFoodList);
+                List<Food> fastFoodList = processFood.doAnNhanh(foodList);
+                AdapterFood adapterFood = new AdapterFood(fastFoodList, mainActivity, idFoodList, idRes);
                 rcvDataFood.setAdapter(adapterFood);
             }
         });
         tvDrink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Food> drinkList=processFood.doUong(foodList);
-                AdapterFood adapterFood=new AdapterFood(drinkList,mainActivity,idFoodList);
+                List<Food> drinkList = processFood.doUong(foodList);
+                AdapterFood adapterFood = new AdapterFood(drinkList, mainActivity, idFoodList, idRes);
                 rcvDataFood.setAdapter(adapterFood);
             }
         });
         tvRice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Food> comList=processFood.com(foodList);
-                AdapterFood adapterFood=new AdapterFood(comList,mainActivity,idFoodList);
+                List<Food> comList = processFood.com(foodList);
+                AdapterFood adapterFood = new AdapterFood(comList, mainActivity, idFoodList, idRes);
                 rcvDataFood.setAdapter(adapterFood);
             }
         });
         butAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentEditFood fragment=new FragmentEditFood();
-                Bundle bundle=new Bundle();
+                FragmentEditFood fragment = new FragmentEditFood();
+                Bundle bundle = new Bundle();
                 bundle.putString("url", "");
                 bundle.putString("nameFood", "");
                 bundle.putString("detailFood", "");
                 bundle.putString("id", "");
                 bundle.putString("type", "");
-                bundle.putString("idRes","");
-                bundle.putString("price","");
+                bundle.putString("idRes", "");
+                bundle.putString("price", "");
+                bundle.putString("IdRes",idRes);
                 bundle.putStringArrayList("listIDFood", (ArrayList<String>) idFoodList);
                 fragment.setArguments(bundle);
                 mainActivity.getFragment(fragment);
@@ -127,31 +128,23 @@ public class FragmentListFood extends Fragment {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(idRes.equals("admin")) {
-                    FragmentEditRestaurant fragmentHome = new FragmentEditRestaurant();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IdRes", "admin");
-                    fragmentHome.setArguments(bundle);
-                    mainActivity.getFragment(fragmentHome);
-                }else{
-                    FragmentEditRestaurant fragmentHome = new FragmentEditRestaurant();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IdRes", idRes);
-                    fragmentHome.setArguments(bundle);
-                    mainActivity.getFragment(fragmentHome);
-                }
+                FragmentEditRestaurant fragmentHome = new FragmentEditRestaurant();
+                Bundle bundle = new Bundle();
+                bundle.putString("IdRes", idRes);
+                fragmentHome.setArguments(bundle);
+                mainActivity.getFragment(fragmentHome);
             }
         });
         return view;
     }
 
-    public void init(){
-        mainActivity= (MainActivity) getActivity();
-        imgBack=view.findViewById(R.id.imgButArrowBack);
-        tvFastFood=view.findViewById(R.id.tvFastFood);
-        tvDrink=view.findViewById(R.id.tvDrink);
-        tvRice=view.findViewById(R.id.tvRice);
-        butAdd=view.findViewById(R.id.butAdd);
-        rcvDataFood=view.findViewById(R.id.dataFood);
+    public void init() {
+        mainActivity = (MainActivity) getActivity();
+        imgBack = view.findViewById(R.id.imgButArrowBack);
+        tvFastFood = view.findViewById(R.id.tvFastFood);
+        tvDrink = view.findViewById(R.id.tvDrink);
+        tvRice = view.findViewById(R.id.tvRice);
+        butAdd = view.findViewById(R.id.butAdd);
+        rcvDataFood = view.findViewById(R.id.dataFood);
     }
 }
