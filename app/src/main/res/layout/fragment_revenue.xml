@@ -13,10 +13,10 @@
         android:id="@+id/edInputIdRes"
         android:layout_width="80dp"
         android:layout_height="40dp"
-        android:paddingLeft="5dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:background="@drawable/vien_item_food" />
+        android:background="@drawable/vien_item_food"
+        android:paddingLeft="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,8 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center"
+                android:textColor="@color/black"
                 android:text="11:00-13:00"
-                android:textColor="@color/black" />
+                />
 
             <TextView
                 android:id="@+id/tv11to13"

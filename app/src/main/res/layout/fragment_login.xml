@@ -8,27 +8,28 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
         android:src="@drawable/logo"
-        android:layout_width="300dp"
-        android:layout_height="300dp"/>
+        android:layout_width="200dp"
+        android:layout_height="200dp"/>
 
     <EditText
         android:id="@+id/edPassRes"
-        android:layout_below="@+id/imgLogo"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:hint="Nhập mã bảo mật"
-        android:paddingLeft="10dp"
-        android:drawableEnd="@drawable/edit"
-        android:background="@drawable/vien_item_food"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="50dp"
+        android:layout_below="@+id/imgLogo"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/vien_item_food"
+        android:drawableEnd="@drawable/edit"
+        android:hint="Nhập mã bảo mật"
+        android:paddingLeft="10dp" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/butCheck"
-        android:text="Check"
-        android:background="@drawable/but_order_cart"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/edPassRes"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
-        android:layout_width="100dp"
-        android:layout_height="50dp"/>
+        android:background="@drawable/but_order_cart"
+        android:text="Check" />
 </RelativeLayout>

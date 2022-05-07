@@ -106,7 +106,7 @@ public class FragmentEditRestaurant extends Fragment {
                         Toast.makeText(mainActivity, "ID already exists", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                if (nameRes.trim().equals("") || addressRes.trim().equals("") || id.trim().equals("")) {
+                if (!nameRes.trim().equals("") || !addressRes.trim().equals("") || !id.trim().equals("")) {
                     String openRes = hourOpen.getValue() + ":" + minuteOpen.getValue();
                     String closeRes = hourClose.getValue() + ":" + minuteClose.getValue();
                     updateAvt(imageUri);

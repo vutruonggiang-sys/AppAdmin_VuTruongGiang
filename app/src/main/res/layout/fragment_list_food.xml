@@ -15,13 +15,13 @@
         android:id="@+id/tvFastFood"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_below="@+id/imgButArrowBack"
         android:drawableEnd="@drawable/arrow_right"
         android:gravity="left"
         android:text="@string/fastFood"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/imgButArrowBack" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvDrink"

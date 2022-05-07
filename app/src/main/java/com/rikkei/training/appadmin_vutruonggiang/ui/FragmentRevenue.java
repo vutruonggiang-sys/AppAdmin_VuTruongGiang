@@ -161,6 +161,7 @@ public class FragmentRevenue extends Fragment {
 
     private void getDataAdmin() {
         if(!edIdRes.getText().toString().trim().equals("")){
+            totalRevenueList.clear();
             try {
                 databaseReference.child("doanhthu").child(edIdRes.getText().toString().trim()).addValueEventListener(new ValueEventListener() {
                     @Override

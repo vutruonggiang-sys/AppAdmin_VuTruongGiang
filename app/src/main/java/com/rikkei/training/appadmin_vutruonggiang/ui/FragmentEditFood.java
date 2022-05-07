@@ -71,7 +71,7 @@ public class FragmentEditFood extends Fragment {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     String urlNew = "";
     List<String> idFoodList = new ArrayList<>();
-    String idRes="";
+    String idRes = "";
 
     public static Fragment newInstance() {
 
@@ -116,12 +116,14 @@ public class FragmentEditFood extends Fragment {
                         Toast.makeText(mainActivity, "ID already exists", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                if (idFood.equals("") || nameFood.equals("") || detailFood.equals("") || priceFood.equals("")) {
+                if (!idFood.equals("") || !nameFood.equals("") || !detailFood.equals("") || !priceFood.equals("")) {
                     updateImg(imageUri);
-                    if (urlNew.equals("")) {
-
+                    if (!urlNew.equals("")) {
+                        Food food = new Food(idFood,urlNew, nameFood, detailFood, idNh, type, Float.parseFloat(priceFood), 5f);
+                        databaseReference.child(idFood).setValue(food);
+                        Toast.makeText(mainActivity, "Successful!", Toast.LENGTH_SHORT).show();
                     } else {
-
+                        Toast.makeText(mainActivity, "You had to have image's food", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(mainActivity, "You need to enter enough information", Toast.LENGTH_SHORT).show();
@@ -286,7 +288,7 @@ public class FragmentEditFood extends Fragment {
             detail = type + bundle.getString("detailFood", "");
             price = price + bundle.getFloat("price", 0);
             idFoodList = bundle.getStringArrayList("listIDFood");
-            idRes=idRes+bundle.getString("IdRes","");
+            idRes = idRes + bundle.getString("IdRes", "");
             if (!id.equals("")) {
                 edId.setText(id);
                 edId.setEnabled(false);
