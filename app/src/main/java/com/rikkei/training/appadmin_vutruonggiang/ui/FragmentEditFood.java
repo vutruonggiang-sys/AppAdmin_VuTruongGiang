@@ -36,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rikkei.training.appadmin_vutruonggiang.R;
 import com.rikkei.training.appadmin_vutruonggiang.modle.Food;
+import com.rikkei.training.appadmin_vutruonggiang.modle.NhaHang;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,6 +73,7 @@ public class FragmentEditFood extends Fragment {
     String urlNew = "";
     List<String> idFoodList = new ArrayList<>();
     String idRes = "";
+    int d=0;
 
     public static Fragment newInstance() {
 
@@ -111,24 +113,77 @@ public class FragmentEditFood extends Fragment {
                 String nameFood = edName.getText().toString().trim();
                 String detailFood = edDetail.getText().toString().trim();
                 String priceFood = edPrice.getText().toString().trim();
-                if (!edId.isEnabled())
-                    if (idFoodList.contains(idFood)) {
+//                if (!edId.isEnabled())
+//                    if (idFoodList.contains(idFood)) {
+//                        Toast.makeText(mainActivity, "ID already exists", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                if (!idFood.equals("") || !nameFood.equals("") || !detailFood.equals("") || !priceFood.equals("")) {
+//                    updateImg(imageUri);
+//                    if (!urlNew.equals("")) {
+//                        Food food = new Food(idFood, urlNew, nameFood, detailFood, idNh, type, Float.parseFloat(priceFood), 5f);
+//                        databaseReference.child(idFood).setValue(food);
+//                        Toast.makeText(mainActivity, "Successful!", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(mainActivity, "You had to have image's food", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    Toast.makeText(mainActivity, "You need to enter enough information", Toast.LENGTH_SHORT).show();
+//                }
+                if (edId.isEnabled()) {
+                    if (idFoodList.contains(id)) {
                         Toast.makeText(mainActivity, "ID already exists", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                if (!idFood.equals("") || !nameFood.equals("") || !detailFood.equals("") || !priceFood.equals("")) {
-                    updateImg(imageUri);
-                    if (!urlNew.equals("")) {
-                        Food food = new Food(idFood,urlNew, nameFood, detailFood, idNh, type, Float.parseFloat(priceFood), 5f);
-                        databaseReference.child(idFood).setValue(food);
-                        Toast.makeText(mainActivity, "Successful!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(mainActivity, "You had to have image's food", Toast.LENGTH_SHORT).show();
+                    if (!idFood.trim().equals("") || !nameFood.trim().equals("") || !detailFood.trim().equals("") || !priceFood.trim().equals("")) {
+                        if (d==1) {
+                            riversRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Food food = new Food(idFood, uri.toString(), nameFood, detailFood, idNh, type, Float.parseFloat(priceFood), 5f);
+                                            databaseReference.child(idFood).setValue(food);
+                                            Toast.makeText(mainActivity, "Updated!!!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+
+                            Toast.makeText(mainActivity, "Updated!!!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } else {
-                    Toast.makeText(mainActivity, "You need to enter enough information", Toast.LENGTH_SHORT).show();
+                    if (idFoodList.contains(id)) {
+                        Toast.makeText(mainActivity, "ID already exists", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!idFood.trim().equals("") || !nameFood.trim().equals("") || !detailFood.trim().equals("") || !priceFood.trim().equals("")) {
+                        if (d==1) {
+                            riversRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            Food food = new Food(idFood, uri.toString(), nameFood, detailFood, idNh, type, Float.parseFloat(priceFood), 5f);
+                                            databaseReference.child(idFood).setValue(food);
+                                            Toast.makeText(mainActivity, "Updated!!!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            Toast.makeText(mainActivity, "Fail when add", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(mainActivity, "Fail Updated!!!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
+
         });
 
         imgCamera.setOnClickListener(new View.OnClickListener() {
@@ -144,13 +199,6 @@ public class FragmentEditFood extends Fragment {
                         openGallery();
                     }
                 });
-                alertDialog.setButton("Camera", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        aksPermissionAndCamera();
-                        openCamera();
-                    }
-                });
                 alertDialog.show();
             }
         });
@@ -159,15 +207,10 @@ public class FragmentEditFood extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
-            Bundle bundle = data.getExtras();
-            Bitmap bitmap = (Bitmap) bundle.get("data");
-            imgSquare.setImageBitmap(bitmap);
-            imageUri = saveImageCamera(bitmap);
-        }
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             imgSquare.setImageURI(imageUri);
+            d=1;
         }
     }
 
@@ -175,15 +218,6 @@ public class FragmentEditFood extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQUEST_CODE_CAMERA: {
-                if (grantResults.length > 1
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openCamera();
-                } else {
-                    Toast.makeText(mainActivity, "Permission Denied", Toast.LENGTH_LONG).show();
-                }
-                break;
-            }
             case REQUEST_CODE_GALLERY: {
                 if (grantResults.length > 1
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED

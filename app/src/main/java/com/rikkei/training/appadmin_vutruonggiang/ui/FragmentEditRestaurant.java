@@ -71,6 +71,7 @@ public class FragmentEditRestaurant extends Fragment {
     String urlNew = "";
     List<String> idResList = new ArrayList<>();
     String idRes="";
+    int d=0;
 
     public static Fragment newInstance() {
 
@@ -86,10 +87,6 @@ public class FragmentEditRestaurant extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragamnet_edit_restaurant, container, false);
         init();
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            idRes = idRes + bundle.getString("IdRes", "");
-        }
         databaseReference = firebaseDatabase.getReference().child("nhaHang");
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -101,25 +98,63 @@ public class FragmentEditRestaurant extends Fragment {
                 String nameRes = edNameRes.getText().toString();
                 String addressRes = edAddressRes.getText().toString();
                 String id = edIdRes.getText().toString();
-                if (edIdRes.isEnabled())
+                if (edIdRes.isEnabled()) {
                     if (idResList.contains(id)) {
                         Toast.makeText(mainActivity, "ID already exists", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                if (!nameRes.trim().equals("") || !addressRes.trim().equals("") || !id.trim().equals("")) {
-                    String openRes = hourOpen.getValue() + ":" + minuteOpen.getValue();
-                    String closeRes = hourClose.getValue() + ":" + minuteClose.getValue();
-                    updateAvt(imageUri);
-                    if (urlNew.equals("")) {
-                        NhaHang nhaHang = new NhaHang(idNh, addressRes, nameRes, url, openRes, closeRes, 5, 0, 0);
-                        databaseReference.child(idNh).setValue(nhaHang);
-                    } else {
-                        NhaHang nhaHang = new NhaHang(idNh, addressRes, nameRes, urlNew, openRes, closeRes, 5, 0, 0);
-                        databaseReference.child(idNh).setValue(nhaHang);
+                    if (!nameRes.trim().equals("") || !addressRes.trim().equals("") || !id.trim().equals("")) {
+                        String openRes = hourOpen.getValue() + ":" + minuteOpen.getValue();
+                        String closeRes = hourClose.getValue() + ":" + minuteClose.getValue();
+                        if (d==1) {
+                            riversRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            NhaHang nhaHang = new NhaHang(edIdRes.getText().toString(), addressRes, nameRes, uri.toString(), openRes, closeRes, 5, 0, 0);
+                                            databaseReference.child(edIdRes.getText().toString()).setValue(nhaHang);
+                                            Toast.makeText(mainActivity, "Updated!!!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        }else {
+                            NhaHang nhaHang = new NhaHang(edIdRes.getText().toString(), addressRes, nameRes, url, openRes, closeRes, 5, 0, 0);
+                            databaseReference.child(edIdRes.getText().toString()).setValue(nhaHang);
+                            Toast.makeText(mainActivity, "Updated!!!", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    Toast.makeText(mainActivity, "Updated!!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(mainActivity, "Fail Updated!!!", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (idResList.contains(id)) {
+                        Toast.makeText(mainActivity, "ID already exists", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!nameRes.trim().equals("") || !addressRes.trim().equals("") || !id.trim().equals("")) {
+                        String openRes = hourOpen.getValue() + ":" + minuteOpen.getValue();
+                        String closeRes = hourClose.getValue() + ":" + minuteClose.getValue();
+                        updateAvt(imageUri);
+                        if (d==1) {
+                            riversRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            NhaHang nhaHang = new NhaHang(edIdRes.getText().toString(), addressRes, nameRes, uri.toString(), openRes, closeRes, 5, 0, 0);
+                                            databaseReference.child(edIdRes.getText().toString()).setValue(nhaHang);
+                                            Toast.makeText(mainActivity, "Updated!!!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            Toast.makeText(mainActivity, "Fail when add", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(mainActivity, "Fail Updated!!!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -156,13 +191,6 @@ public class FragmentEditRestaurant extends Fragment {
                         openGallery();
                     }
                 });
-                alertDialog.setButton("Camera", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        aksPermissionAndCamera();
-                        openCamera();
-                    }
-                });
                 alertDialog.show();
             }
         });
@@ -172,15 +200,10 @@ public class FragmentEditRestaurant extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
-            Bundle bundle = data.getExtras();
-            Bitmap bitmap = (Bitmap) bundle.get("data");
-            imgUrl.setImageBitmap(bitmap);
-            imageUri = saveImageCamera(bitmap);
-        }
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             imgUrl.setImageURI(imageUri);
+            d=1;
         }
     }
 
@@ -188,15 +211,6 @@ public class FragmentEditRestaurant extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQUEST_CODE_CAMERA: {
-                if (grantResults.length > 1
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openCamera();
-                } else {
-                    Toast.makeText(mainActivity, "Permission Denied", Toast.LENGTH_LONG).show();
-                }
-                break;
-            }
             case REQUEST_CODE_GALLERY: {
                 if (grantResults.length > 1
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
@@ -314,6 +328,7 @@ public class FragmentEditRestaurant extends Fragment {
             close = close + bundle.getString("close", "");
             idNh = idNh + bundle.getString("idRes", "");
             idResList = bundle.getStringArrayList("listIDRes");
+            idRes = idRes + bundle.getString("IdRes", "");
 
             if (!idNh.equals("")) {
                 edIdRes.setText(idNh);

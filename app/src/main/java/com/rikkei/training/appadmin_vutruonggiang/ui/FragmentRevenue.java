@@ -36,14 +36,16 @@ public class FragmentRevenue extends Fragment {
     TextView tvLunch;
     TextView tvTonight;
     TextView tvNothing;
+    TextView tvSumMoney;
     RecyclerView rcvDataRevenue;
-    String idRes="";
+    String idRes = "";
     EditText edIdRes;
-    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference=firebaseDatabase.getReference();
-    List<RevenueByTime> revenueByTimeList=new ArrayList<>();
-    List<TotalRevenue> totalRevenueList=new ArrayList<>();
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = firebaseDatabase.getReference();
+    List<RevenueByTime> revenueByTimeList = new ArrayList<>();
+    List<TotalRevenue> totalRevenueList = new ArrayList<>();
     AdapterRevenue adapterRevenue;
+    long totalMoney = 0;
 
     public static Fragment newInstance() {
 
@@ -57,11 +59,11 @@ public class FragmentRevenue extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_revenue,container,false);
-        Bundle bundle=getArguments();
-        idRes=idRes+bundle.getString("IdRes","");
+        view = inflater.inflate(R.layout.fragment_revenue, container, false);
+        Bundle bundle = getArguments();
+        idRes = idRes + bundle.getString("IdRes", "");
         init();
-        if(idRes.equals("admin")) {
+        if (idRes.equals("admin")) {
             edIdRes.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -100,7 +102,7 @@ public class FragmentRevenue extends Fragment {
                     getDataAdmin();
                 }
             });
-        }else{
+        } else {
             getData();
             edIdRes.setVisibility(View.GONE);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mainActivity, RecyclerView.VERTICAL, false);
@@ -140,39 +142,48 @@ public class FragmentRevenue extends Fragment {
     }
 
     private void getData() {
-        databaseReference.child("doanhthu").child(idRes).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> dataSnapshotIterable=snapshot.getChildren();
-                for(DataSnapshot data:dataSnapshotIterable){
-                    TotalRevenue totalRevenue=data.getValue(TotalRevenue.class);
-                    totalRevenueList.add(totalRevenue);
+        try {
+            databaseReference.child("doanhthu").child(idRes).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Iterable<DataSnapshot> dataSnapshotIterable = snapshot.getChildren();
+                    for (DataSnapshot data : dataSnapshotIterable) {
+                        TotalRevenue totalRevenue = data.getValue(TotalRevenue.class);
+                        totalRevenueList.add(totalRevenue);
+                        totalMoney = totalMoney + totalRevenue.getTotal();
+                    }
+                    adapterRevenue = new AdapterRevenue(totalRevenueList);
+                    rcvDataRevenue.setAdapter(adapterRevenue);
+                    tvSumMoney.setText(totalMoney + " VND");
                 }
-                adapterRevenue=new AdapterRevenue(totalRevenueList);
-                rcvDataRevenue.setAdapter(adapterRevenue);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }catch (Exception ex){
+
+        }
     }
 
     private void getDataAdmin() {
-        if(!edIdRes.getText().toString().trim().equals("")){
+        if (!edIdRes.getText().toString().trim().equals("")) {
             totalRevenueList.clear();
+            totalMoney=0;
             try {
                 databaseReference.child("doanhthu").child(edIdRes.getText().toString().trim()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Iterable<DataSnapshot> dataSnapshotIterable=snapshot.getChildren();
-                        for(DataSnapshot data:dataSnapshotIterable){
-                            TotalRevenue totalRevenue=data.getValue(TotalRevenue.class);
+                        Iterable<DataSnapshot> dataSnapshotIterable = snapshot.getChildren();
+                        for (DataSnapshot data : dataSnapshotIterable) {
+                            TotalRevenue totalRevenue = data.getValue(TotalRevenue.class);
                             totalRevenueList.add(totalRevenue);
+                            totalMoney = totalMoney +totalRevenue.getTotal();
                         }
-                        adapterRevenue=new AdapterRevenue(totalRevenueList);
+                        adapterRevenue = new AdapterRevenue(totalRevenueList);
                         rcvDataRevenue.setAdapter(adapterRevenue);
+                        tvSumMoney.setText(totalMoney+" VND");
                     }
 
                     @Override
@@ -180,19 +191,20 @@ public class FragmentRevenue extends Fragment {
 
                     }
                 });
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
     }
 
-    public void init(){
-        mainActivity= (MainActivity) getActivity();
-        imgButBack=view.findViewById(R.id.imgButBack);
-        tvLunch=view.findViewById(R.id.tv11to13);
-        tvNothing=view.findViewById(R.id.tvOtherTime);
-        tvTonight=view.findViewById(R.id.tv17To19);
-        rcvDataRevenue=view.findViewById(R.id.dataFoodRevenue);
-        edIdRes=view.findViewById(R.id.edInputIdRes);
+    public void init() {
+        mainActivity = (MainActivity) getActivity();
+        imgButBack = view.findViewById(R.id.imgButBack);
+        tvLunch = view.findViewById(R.id.tv11to13);
+        tvNothing = view.findViewById(R.id.tvOtherTime);
+        tvTonight = view.findViewById(R.id.tv17To19);
+        rcvDataRevenue = view.findViewById(R.id.dataFoodRevenue);
+        edIdRes = view.findViewById(R.id.edInputIdRes);
+        tvSumMoney = view.findViewById(R.id.tvSumMoney);
     }
 }

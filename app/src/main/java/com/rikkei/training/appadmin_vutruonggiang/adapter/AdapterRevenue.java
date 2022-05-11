@@ -39,17 +39,21 @@ public class AdapterRevenue extends RecyclerView.Adapter<AdapterRevenue.ViewHold
         holder.tvRevenueFood.setText(totalRevenue.getTotal()+"");
         FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
         DatabaseReference databaseReference=firebaseDatabase.getReference();
-        databaseReference.child("food").child(totalRevenue.getId()).child("name").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                holder.tvNameFood.setText(snapshot.getValue().toString());
-            }
+        try {
+            databaseReference.child("food").child(totalRevenue.getId()).child("name").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    holder.tvNameFood.setText(snapshot.getValue().toString());
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }catch (Exception e){
+
+        }
     }
 
     @Override
