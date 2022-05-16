@@ -88,6 +88,7 @@ public class FragmentRestaurant extends Fragment {
                     bundle.putString("open", "");
                     bundle.putString("close", "");
                     bundle.putString("idRes", "");
+                    bundle.putString("IdRes", "admin");
                     bundle.putStringArrayList("listIDRes", (ArrayList<String>) idResList);
                     fragment.setArguments(bundle);
                     mainActivity.getFragment(fragment);

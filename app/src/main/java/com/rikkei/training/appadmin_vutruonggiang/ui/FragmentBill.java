@@ -71,6 +71,8 @@ public class FragmentBill extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Iterable<DataSnapshot> dataSnapshotIterable = snapshot.getChildren();
+                thongTinNguoiOrderList.clear();
+                thongTinNguoiOrderList1.clear();
                 for (DataSnapshot data : dataSnapshotIterable) {
                     ThongTinNguoiOrder thongTinNguoiOrder = data.getValue(ThongTinNguoiOrder.class);
                     thongTinNguoiOrderList.add(thongTinNguoiOrder);
